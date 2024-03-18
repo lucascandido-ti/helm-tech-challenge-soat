@@ -1,72 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "application.fullname" . }}
-  labels:
-    {{- include "application.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-api-deployment
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
-  selector:
-    matchLabels:
-      {{- include "application.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      name: {{ .Release.Name }}-api-deployment
       labels:
-        {{- include "application.labels" . | nindent 8 }}
-	{{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: {{ .Release.Name }}-api-deployment
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "application.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: {{ .Release.Name }}-api-deployment
+          image: {{ .Values.application.image.name }}:{{ .Values.application.image.tag }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
+            - containerPort: {{ .Values.application.port.default }}
+          env:
+            - name: MY_SETTINGS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api-settings
+                  key: settings.json
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /api/category
+              port: {{ .Values.application.port.default }}
+            periodSeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 20
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /api/category
+              port: {{ .Values.application.port.default }}
+            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 3
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
-          volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            limits:
+              memory: 512Mi
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-api-deployment

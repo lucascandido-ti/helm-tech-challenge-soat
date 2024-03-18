@@ -10,3 +10,5 @@ database:
   image:
     name: lucascandido/tech-challenge-db
     tag: v3
+  service:
+    name: svc-tech-challenge-db

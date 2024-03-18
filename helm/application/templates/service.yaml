@@ -1,15 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "application.fullname" . }}
+  name: {{ .Release.Name }}-svc-api
   labels:
-    {{- include "application.labels" . | nindent 4 }}
+    app: {{ .Release.Name }}-svc-api
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
-    {{- include "application.selectorLabels" . | nindent 4 }}
+    app: {{ .Release.Name }}-api-deployment
+  type: {{ .Values.application.service.type }}
+  ports:
+    - port: {{ .Values.application.service.ports.port }}
+      protocol: {{ .Values.application.service.ports.protocol }}
+      targetPort: {{ .Values.application.port.default }}
