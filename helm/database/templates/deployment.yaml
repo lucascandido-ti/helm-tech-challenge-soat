@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-db-deployment
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}-db-deployment
+      labels:
+        app: {{ .Release.Name }}-db-deployment
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-db-deployment
+          image: {{ .Values.database.image.name }}:{{ .Values.database.image.tag }}
+          imagePullPolicy: 'IfNotPresent'
+          ports:
+            - containerPort: {{ .Values.database.port }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-db-configmap
+          resources:
+            limits:
+              memory: 512Mi
+      volumes:
+        - name: postgresdb
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-postgres-pvc
+  replicas: {{ .Values.database.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-db-deployment

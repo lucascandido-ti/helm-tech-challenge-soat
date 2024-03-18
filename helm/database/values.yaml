@@ -1,0 +1,12 @@
+database:
+  port: 5432
+  replicas: 1
+  config:
+    PostgresDB: postgres
+    PostgresUser: postgres
+    PostgresPassword: root
+  volume:
+    storageClassName: manual
+  image:
+    name: lucascandido/tech-challenge-db
+    tag: v3

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name}}-svc-db
+  labels:
+    app: {{ .Release.Name}}-svc-db
+spec:
+  ports:
+    - port: {{ .Values.database.port }}
+      targetPort: {{ .Values.database.port }}
+  selector:
+    app: {{ .Release.Name }}-db-deployment
