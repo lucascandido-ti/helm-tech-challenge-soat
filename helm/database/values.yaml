@@ -8,7 +8,7 @@ database:
   volume:
     storageClassName: manual
   image:
-    name: lucascandido/tech-challenge-db
-    tag: v3
+    name: 782662248973.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-db
+    tag: latest
   service:
     name: svc-tech-challenge-db

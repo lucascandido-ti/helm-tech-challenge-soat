@@ -2,8 +2,8 @@ application:
   port:
     default: 3000
   image:
-    name: lucascandido/tech-challenge-app
-    tag: v5
+    name: 782662248973.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-app
+    tag: latest
   service:
     type: LoadBalancer
     ports:
