@@ -3,9 +3,9 @@ entries:
   application-tech-challenge:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-03-19T15:51:40.1290933-03:00"
+    created: "2024-03-19T15:54:22.8248191-03:00"
     description: A Helm chart for Kubernetes
-    digest: b9e96571d9080fe154d7477af669ef76df24c20b2fb7db70565c7a2d6f03f9cb
+    digest: 2db535a9aef6a299b61d4c4ec233881be49d37869256f4d0befb4cdf7293580c
     name: application-tech-challenge
     type: application
     urls:
@@ -14,7 +14,7 @@ entries:
   database-tech-challenge:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-03-19T15:51:40.1355488-03:00"
+    created: "2024-03-19T15:54:22.8253484-03:00"
     description: A Helm chart for Kubernetes
     digest: ef2d816ef96a0e05eb19f71598dca8ec0981b4d13007f8c6ea7a724de69174b7
     name: database-tech-challenge
@@ -22,4 +22,4 @@ entries:
     urls:
     - packages/database-tech-challenge-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-19T15:51:40.1278924-03:00"
+generated: "2024-03-19T15:54:22.8232066-03:00"
